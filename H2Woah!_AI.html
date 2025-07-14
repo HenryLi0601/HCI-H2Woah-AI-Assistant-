@@ -18,18 +18,17 @@
       const [isRecording, setIsRecording] = React.useState(false);
       const messagesEndRef = React.useRef(null);
 
-      const apiKey = "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"; 
+      const apiKey = "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"; 
 
       React.useEffect(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
       }, [messages]);
 
-      const sendToGPT4o = async (textPrompt = "", base64Image = null) => {
+      const sendToClaude = async (textPrompt = "", base64Image = null) => {
         const content = [];
         if (textPrompt) content.push({ type: "text", text: textPrompt });
         if (base64Image) content.push({ type: "image_url", image_url: { url: base64Image } });
 
-        // Add placeholder for "Responding..."
         const placeholderId = Date.now();
         setMessages((prev) => [...prev, {
           id: placeholderId,
@@ -54,7 +53,6 @@
           const data = await response.json();
           const aiReply = data.choices?.[0]?.message?.content || "No reply.";
 
-          // Replace the placeholder message
           setMessages((prev) =>
             prev.map((msg) =>
               msg.id === placeholderId ? { ...msg, content: aiReply } : msg
@@ -75,7 +73,7 @@
         if (!input.trim()) return;
         const userMessage = { type: 'user', content: input, timestamp: new Date() };
         setMessages((prev) => [...prev, userMessage]);
-        sendToGPT4o(input);
+        sendToClaude(input);
         setInput('');
       };
 
@@ -102,7 +100,6 @@
         recognition.onresult = (event) => {
           const transcript = event.results[0][0].transcript;
 
-          // Replace placeholder with transcript
           setMessages((prev) => {
             const updated = [...prev];
             updated[updated.length - 1] = {
@@ -113,7 +110,7 @@
             return updated;
           });
 
-          sendToGPT4o(transcript);
+          sendToClaude(transcript);
         };
 
         recognition.onerror = (event) => {
@@ -143,7 +140,7 @@
               timestamp: new Date()
             };
             setMessages((prev) => [...prev, userMessage]);
-            sendToGPT4o("Please describe this image.", base64);
+            sendToClaude("Please describe this image.", base64);
           };
           reader.readAsDataURL(file);
         }
