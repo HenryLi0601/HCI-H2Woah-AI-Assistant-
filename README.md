@@ -10,3 +10,8 @@ Speech recognition via Web Speech API
 Image upload and interpretation
 
 Powered by Claude 3 Haiku through OpenRouter API
+
+⚠️ Reminder
+This project uses a free-tier API key via OpenRouter.
+Please avoid excessive usage — too many requests may cause delays or result in 'No reply.' errors due to rate limits or usage caps.
+
